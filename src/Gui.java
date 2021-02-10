@@ -33,7 +33,7 @@ Snygga gärna till/gör ett eget. Men tänk på att gör GUI:s INTE är ett kurs
         //Returnera det senaste commitade kommandot
         public String getCommand(){
             if (this.gotCommand){
-                System.out.println(this.command);
+                //System.out.println(this.command);
                 return this.command;
             }
             return "-1";
@@ -45,6 +45,9 @@ Snygga gärna till/gör ett eget. Men tänk på att gör GUI:s INTE är ett kurs
          }
         public void setShowPersons(Person person){
             this.showPersons.setText(person.toString());
+        }
+        public void setShowPersonsFras(Person person){this.showPersons.setText(person.fras);
+
         }
         public void setShowInventory(Inventory i){
             this.inventory.setText(i.toString());
@@ -73,8 +76,14 @@ Snygga gärna till/gör ett eget. Men tänk på att gör GUI:s INTE är ett kurs
         private void setUpElements(){
             this.panel = new JPanel(new GridLayout(4,3));
             this.showRoom = new JTextArea("Room: ");
+            this.showRoom.setLineWrap(true);
+            this.showRoom.setWrapStyleWord(true);
             this.showPersons = new JTextArea("Persons");
+            this.showPersons.setLineWrap(true);
+            this.showPersons.setWrapStyleWord(true);
             this.inventory = new JTextArea("Inventory");
+            this.inventory.setLineWrap(true);
+            this.inventory.setWrapStyleWord(true);
             this.input = new JTextField("Give command");
             this.showPersons.setEditable(false);
             this.showRoom.setEditable(false);
