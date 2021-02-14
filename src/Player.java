@@ -3,20 +3,19 @@ public class Player {
     Inventory inventory;
     int position;
     Gui gui;
-    public Player (String name){
+    Room[] map;
+    public Player (String name, int position, Room[] map, Gui gui ){
+
         this.name = name;
+        this.position = position;
         this.inventory = new Inventory(5);
+        this.map = map;
+        this.gui = gui;
 
     }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Inventory getInventory(){
+    public Inventory getInventory() {
         return this.inventory;
     }
-
     public String toString (){
         return this.name + " is carrying " +this.inventory;
     }

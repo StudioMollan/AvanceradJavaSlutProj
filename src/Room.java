@@ -17,21 +17,19 @@ public class Room {
         this.inventory = new Inventory(10);
     }
 
-    public void addNpc(Person person) {
-//        int length = (int) Arrays.stream(this.person)
-//                .filter(Objects::nonNull).count();
-//        try {
-//            Array.set(this.person, length+1, person);
-//        } catch (IllegalArgumentException | ArrayIndexOutOfBoundsException e) {
-//            e.printStackTrace();
-//        }
+    public String getName() {
+        return name;
+    }
 
-        this.person[0] = person; //TODO Fixa fler personer
+    public synchronized void addNpc(Person person) {
+        this.person[0] = person;
     }
 
     public Person getPersons() { return this.person[0]; }
-
-    public void addObject(GameObject go) {this.inventory.addObject(go); }
+    public Inventory getInventory() {
+        return this.inventory;
+    }
+    public synchronized void addObject(GameObject go) {this.inventory.addObject(go); }
     public String toString() { return name + " : " + description + "\n" + inventory; }
 
 

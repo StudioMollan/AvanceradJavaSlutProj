@@ -1,16 +1,14 @@
+import java.util.Scanner;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 public class Game {
-    private static Gui gui;
-    private static Room personalRum, förstaKlass, resturangVagn, andraKlass;
-    private static Room[] map;
+    private Gui gui;
+    private Room personalRum, förstaKlass, resturangVagn, andraKlass;
+    private Room[] map;
 
     public Game() {
 
-        //Skapa Player
-
-        Player player = new Player("You");
 
         //Skapa rum
         personalRum = new Room("Tågets personalrum", "Personalens privata kläder på hängare. Ett pentry med ett litet bord och några stolar. Nåt är 'off' här inne...");
@@ -34,7 +32,7 @@ public class Game {
         personalRum.addObject(kvast);
         personalRum.addObject(skap);
         personalRum.addObject(dvd);
-        Person kjellOlofFaeldt = new Person("Kjell-Olof Fäldt", 0, "Jag heter Kjell och Olof, samtidigt.");
+        Person kjellOlofFaeldt = new Person("Kjell-Olof Fäldt", 0, "Jag heter Kjell och Olof, samtidigt.", this.map, this.gui);
         kjellOlofFaeldt.getInventory().addObject(tomCollins);
         personalRum.addNpc(kjellOlofFaeldt);
         System.out.println(kjellOlofFaeldt);
@@ -47,7 +45,7 @@ public class Game {
         chest.getInventory().addObject(pergament);
         förstaKlass.addObject(chest);
         förstaKlass.addObject(di);
-        Person boLundgren = new Person("Bo Lundgren",1, "Högern bitches!");
+        Person boLundgren = new Person("Bo Lundgren", 1, "Högern bitches!", this.map, this.gui);
         boLundgren.getInventory().addObject(tomCollins);
         förstaKlass.addNpc(boLundgren);
         System.out.println(boLundgren);
@@ -62,7 +60,7 @@ public class Game {
         bar.getInventory().addObject(termos);
         bar.getInventory().addObject(tuting);
         resturangVagn.addObject(bar);
-        Person birgitFriggebo = new Person("Birgit Friggebo", 2, "Friggebo bitches!");
+        Person birgitFriggebo = new Person("Birgit Friggebo", 2, "Friggebo bitches!", this.map, this.gui);
         birgitFriggebo.getInventory().addObject(cava);
         resturangVagn.addNpc(birgitFriggebo);
         System.out.println(birgitFriggebo);
@@ -79,7 +77,7 @@ public class Game {
         coffin.getInventory().addObject(gimp);
         andraKlass.addObject(tant);
         andraKlass.addObject(katt);
-        Person goranGreider = new Person("Göran Greider", 3, "Vänstern bitches!");
+        Person goranGreider = new Person("Göran Greider", 3, "Vänstern bitches!", this.map, this.gui);
         goranGreider.getInventory().addObject(tuting);
         andraKlass.addNpc(goranGreider);
         System.out.println(goranGreider);
@@ -87,62 +85,75 @@ public class Game {
 
         //Start all threads
         ScheduledThreadPoolExecutor pool = new ScheduledThreadPoolExecutor(10);
-        pool.scheduleAtFixedRate(kjellOlofFaeldt, 6,9, TimeUnit.SECONDS);
-        pool.scheduleAtFixedRate(boLundgren, 5,8, TimeUnit.SECONDS);
-        pool.scheduleAtFixedRate(birgitFriggebo, 4,7, TimeUnit.SECONDS);
-        pool.scheduleAtFixedRate(goranGreider, 3,6, TimeUnit.SECONDS);
+        pool.scheduleAtFixedRate(kjellOlofFaeldt, 6021, 9085, TimeUnit.MILLISECONDS);
+        pool.scheduleAtFixedRate(boLundgren, 5503, 8500, TimeUnit.MILLISECONDS);
+        pool.scheduleAtFixedRate(birgitFriggebo, 4303, 7802, TimeUnit.MILLISECONDS);
+        pool.scheduleAtFixedRate(goranGreider, 3689, 6723, TimeUnit.MILLISECONDS);
 
         //Skapa NPC
-        Npc bartender = new Npc("Bartender", 2, "Har någon sett min projektor?") {};
+        Npc bartender = new Npc("Bartender", 2, "Har någon sett min projektor?", this.map, this.gui) {
+        };
         GameObject diabild = new GameObject("diabild", true);
         bartender.getInventory().addObject(diabild);
-        pool.scheduleAtFixedRate(bartender, 10,10, TimeUnit.SECONDS);
+        pool.scheduleAtFixedRate(bartender, 10, 10, TimeUnit.SECONDS);
 
 
-        Inventory inventory = new Inventory(5);
+        //Skapa Player
         GameObject projektor = new GameObject("projektor", true);
-        System.out.println(inventory);
-        inventory.addObject(projektor);
-        inventory.addObject(tuting);
-        System.out.println(inventory);
+        Player player1 = new Player("Player 1", 2, this.map, this.gui);
+        System.out.println(player1);
+        player1.getInventory().addObject(tuting);
+        player1.getInventory().addObject(projektor);
+        System.out.println(player1);
+
 
         //Starta guit!
         this.gui = new Gui();
-        //System.out.println(map[1]);
-
-        int position = 1;
-        gui.setShowRoom(map[position].toString());
-        //[r1, r2, r3]
+        gui.setShowRoom(map[player1.position].toString());
 
         while (true) {
             String command = gui.getCommand();
             int newPosition = 0;
-            if (command.equals("1")||command.equals("2")||command.equals("3")||command.equals("4")) {
+            if (command.equals("1") || command.equals("2") || command.equals("3") || command.equals("4")) {
                 newPosition = Integer.parseInt(command) - 1;
             }
-            if (command.equals("1") && isAdjacent(position, newPosition)) {
-                position = 0;
+            if (command.equals("1") && isAdjacent(player1.position, newPosition)) {
+                player1.position = 0;
             }
-            if (command.equals("2") && isAdjacent(position, newPosition)) {
-                position = 1;
+            if (command.equals("2") && isAdjacent(player1.position, newPosition)) {
+                player1.position = 1;
             }
-            if (command.equals("3") && isAdjacent(position, newPosition)) {
-                position = 2;
+            if (command.equals("3") && isAdjacent(player1.position, newPosition)) {
+                player1.position = 2;
             }
-            if (command.equals("4") && isAdjacent(position, newPosition)) {
-                position = 3;
+            if (command.equals("4") && isAdjacent(player1.position, newPosition)) {
+                player1.position = 3;
             }
-            gui.setShowRoom(map[position].toString());
-            gui.setShowInventory(inventory);
-            if (map[position].getPersons() != null) {
-                gui.setPerson(map[position].getPersons());
+            if (command.equals("pick up")) {
+                gui.setInput("Vad vill du plocka upp? Skriv index för saken där den ligger i rummets inventory");
+//                Scanner in = new Scanner(System.in);
+//                System.out.println("Room before Pickup: "+map[player1.position].getInventory().toString());
+//                System.out.println("Player before Pickup: "+player1.getInventory().toString());
+                map[player1.position].getInventory().playerpickUp(player1.getInventory(), map[player1.position].getInventory().getRandomObject());
+//                in.close();
+//                System.out.println("Room after Pickup: "+map[player1.position].getInventory().toString());
+//                System.out.println("Player before Pickup: "+player1.getInventory().toString());
             }
+            if (command.equals("drop")) {
+
+            }
+            gui.setShowRoom(map[player1.position].toString());
+            gui.setShowInventory(player1.getInventory());
+            if (map[player1.position].getPersons() != null) {
+                gui.setPerson(map[player1.position].getPersons());
+            }
+
         }
 
 
     }
 
-    private boolean isAdjacent(int position, int newPosition) {
+    private synchronized boolean isAdjacent(int position, int newPosition) {
         boolean b;
         if (Math.abs(position - newPosition) > 1) {
             b = false;

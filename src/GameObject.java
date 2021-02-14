@@ -1,10 +1,10 @@
 public class GameObject {
     private String name;
-    boolean moveable;
+    private boolean moveable;
 
     public GameObject(String name ,boolean moveable){
         this.name = name;
-        this.moveable = moveable;
+        this.moveable = true;
     }
     public boolean isMoveable(){
         return this.moveable;
@@ -12,9 +12,7 @@ public class GameObject {
     public String getName(){
         return this.name;
     }
-    public String toString
-            (){
-
+    public String toString(){
         return this.name;
     }
 }
