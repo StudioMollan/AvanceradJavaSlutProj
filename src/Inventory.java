@@ -100,10 +100,7 @@ public class Inventory {
     }
     public GameObject getRandomObject() {
 
-        GameObject moveableList = Arrays.stream(this.list)
-                .findFirst(GameObject::isMoveable)
-                .orElse()
-                .new GameObject();
+
 
         int index = (int) (Math.random() * (getFirstEmptyIndex() - 1));
         if (this.list.length == 1) {
